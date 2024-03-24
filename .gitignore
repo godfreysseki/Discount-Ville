@@ -1,0 +1,8 @@
+# Ignore the .git directory
+/.git
+
+# Ignore the .idea directory (assuming it's at the root level)
+/.idea
+
+# Ignore the includes/config.inc.php file
+/includes/config.inc.php

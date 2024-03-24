@@ -1,0 +1,123 @@
+th, td {
+	vertical-align: middle !important;
+}
+
+td img {
+	width: 2.5rem !important;
+	height: 2.5rem !important;
+	border-radius: 50% !important;
+}
+
+.dt-buttons {
+	float: left;
+}
+
+.dataTables_info {
+	float: left;
+}
+
+.direct-chat-messages {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	min-height: 335px;
+}
+
+.direct-chat-msg {
+	max-width: 80% !important;
+	height: auto !important;
+	position: relative;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+.direct-chat-msg.right {
+	align-self: flex-end;
+	text-align: right !important;
+}
+
+.direct-chat-text {
+	width: fit-content;
+	width: -moz-fit-content;
+}
+
+.direct-chat-timestamp {
+	position: absolute;
+	bottom: -15px;
+	font-size: 0.65rem;
+	left: 50px;
+}
+
+.direct-chat-msg.right .direct-chat-timestamp {
+	right: 50px !important;
+	left: auto;
+}
+
+.direct-chat-name {
+	position: absolute;
+	top: -15px;
+	left: 50px;
+}
+
+.direct-chat-msg.right .direct-chat-name {
+	right: 50px;
+	left: auto;
+}
+
+.direct-chat-messages, .contacts {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.dark-mode .nav-pills .nav-item .active {
+	color: white;
+	background: #3f6791;
+}
+
+.color-display {
+	width: 15px;
+	height: 15px;
+	margin-right: 5px;
+	border-radius: 50%;
+}
+
+#myDropzone, .dz-message {
+	display: none
+}
+
+.contact a {
+	display: flex;
+	flex-direction: row;
+}
+
+.contact-info {
+	display: flex;
+	width: 85%;
+	flex-direction: column;
+}
+
+.contact-info span {
+	font-size: 12px;
+	color: #999;
+	height: 20px;
+	overflow: hidden;
+}
+
+.contact .badge {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: center;
+	height: fit-content;
+	align-self: center;
+}
+
+.contact.active {
+	color: white !important;
+	background: rgb(20, 120, 255);
+}
+
+.contact.active a, .contact.active span {
+	color: white !important;
+}

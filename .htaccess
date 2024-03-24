@@ -1,0 +1,17 @@
+## List empty directories for directories without index page
+#IndexIgnore *
+Options -Indexes
+
+## Default index page in any directory
+DirectoryIndex index.php
+
+# Redirect to HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<FilesMatch "^includes/config\.js\.php$">
+    <FilesMatch "\.js$">
+        SetHandler application/x-httpd-php
+    </FilesMatch>
+</FilesMatch>
