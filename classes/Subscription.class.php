@@ -99,8 +99,12 @@
       return $this->selectQuery($sql, $params)->fetch_assoc();
     }
     
-    public function viewSubscriptionPlan($dataId)
+    public function getPlanNameById($planId)
     {
+      $sql    = "SELECT * FROM subscription_plans WHERE subscription_id=?";
+      $params = [$planId];
+      $row    = $this->selectQuery($sql, $params)->fetch_assoc();
+      return $row['name'] ?? null;
     }
     
     public function deleteSubscriptionPlan($planId)
@@ -121,34 +125,63 @@
       return $this->selectQuery($sql);
     }
     
-    public function subscribeUser($customerId, $planId)
+    public function subscribeUser($subscriptionId)
     {
-      // Logic to subscribe a customer to a subscription plan.
-      // Create a subscription entry in the database.
+      // Activate User according to the selected plan
+      // Get the previous subscription for the user and add the remaining time to the new plan
+      // Update vendor's subscription plan
+      $sql    = "UPDATE subscribers SET status='Active' WHERE subscriber_id=?";
+      $params = [$subscriptionId];
+      if ($this->updateQuery($sql, $params)) {
+        return alert('success', 'Vendor subscribed successfully.');
+      } else {
+        return alert('warning', 'Vendor subscription activation failed.');
+      }
     }
     
-    public function cancelSubscription($customerId, $planId)
+    public function subscriptionEditForm($subscriber_id)
     {
-      // Logic to cancel a customer's subscription.
-      // Update subscription status in the database.
+      $sql    = "SELECT * FROM subscribers WHERE subscriber_id=?";
+      $params = [$subscriber_id];
+      $row    = $this->selectQuery($sql, $params)->fetch_assoc();
+      
+      return '<form method="post">
+                <input type="hidden" name="subscriberId" value="' . $subscriber_id . '" class="d-none">
+                <div class="form-group">
+                  <label for="plan">Subscription Plan</label>
+                  <select name="plan" id="plan" class="custom-select select2">
+                  ' . $this->getSubscriptionPlansComboOptions($row['subscription_id']) . '
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="start_date">Start Date</label>
+                  <input type="datetime-local" name="start_date" id="start_date" value="' . $row['subscription_start_date'] . '" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="end_date">End Date</label>
+                  <input type="datetime-local" name="end_date" id="end_date" value="' . $row['subscription_end_date'] . '" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="submit" name="planEditBtn" value="Update Subscription" class="btn btn-primary float-right">
+                </div>
+              </form>';
     }
     
-    public function getCustomerSubscriptions($customerId)
+    public function updateSubscription($subscriberId, $plan, $start_date, $end_date)
     {
-      // Logic to get a customer's active subscriptions.
-      // Query the database for active subscription details.
+      $sql    = "UPDATE subscribers SET subscription_id=?, subscription_start_date=?, subscription_end_date=? WHERE subscriber_id=?";
+      $params = [$plan, $start_date, $end_date, $subscriberId];
+      if ($this->updateQuery($sql, $params)) {
+        return alert('success', 'Subscription updated successfully.');
+      } else {
+        return alert('warning', 'Subscription failed to be updated.');
+      }
     }
     
     public function getAllCustomerSubscriptions()
     {
-      $sql = "SELECT * FROM subscribers ORDER BY subscriber_id DESC";
+      $sql = "SELECT * FROM subscribers s INNER JOIN subscription_plans sp ON s.subscription_id = sp.subscription_id INNER JOIN vendors v ON s.vendor_id = v.vendor_id INNER JOIN users u ON v.user_id = u.user_id ORDER BY subscriber_id DESC";
       return $this->selectQuery($sql);
-    }
-    
-    public function isSubscriptionActive($customerId, $planId)
-    {
-      // Logic to check if a customer has an active subscription to a specific plan.
-      // Query the database for the subscription status.
     }
     
     // Add more methods as needed for your specific subscription-related features.
@@ -226,8 +259,8 @@
         $html .= '<div class="col mb-30">
                     <div class="price-item text-center">
                       <div class="price-top">
-                        <h4>'.$plan['name'].'</h4>
-                        <h2 class="mb-0"><sup>'.CURRENCY.'</sup>'.number_format($plan['price']*12).'</h2>
+                        <h4>' . $plan['name'] . '</h4>
+                        <h2 class="mb-0"><sup>' . CURRENCY . '</sup>' . number_format($plan['price'] * 12) . '</h2>
                         <span class="text-capitalize">per Year</span>
                       </div>
                       <div class="price-content">
@@ -250,7 +283,7 @@
                           </li>
                           <li>
                             <i class="la la-check font-weight-bold text-primary mr-2"></i>
-                            <span class="c-black">'.$plan['max_products'].' Products</span>
+                            <span class="c-black">' . $plan['max_products'] . ' Products</span>
                           </li>
                           <li>
                             <i class="la ' . ($plan['deal_of_day'] ? 'la-check text-primary' : 'la-times text-danger') . ' font-weight-bold mr-2"></i>
@@ -258,10 +291,10 @@
                           </li>
                           <li>
                             <i class="la ' . ($plan['social_media'] ? 'la-check text-primary' : 'la-times text-danger') . ' font-weight-bold mr-2"></i>
-                            <span class="c-black">' . ($plan['social_media'] ? $plan['social_media'] .' Social Media Posts Per Month' : 'No Social Media Posts') . '</span>
+                            <span class="c-black">' . ($plan['social_media'] ? $plan['social_media'] . ' Social Media Posts Per Month' : 'No Social Media Posts') . '</span>
                           </li>
                         </ul>
-                        <a href="pricing_payment.php?id='.$plan['subscription_id'].'&plan=Yearly" class="btn btn-custom">Select Plan</a>
+                        <a href="pricing_payment.php?id=' . $plan['subscription_id'] . '&plan=Yearly" class="btn btn-custom">Select Plan</a>
                       </div>
                     </div>
                   </div>';
@@ -274,8 +307,8 @@
         $html .= '<div class="col mb-30">
                     <div class="price-item text-center">
                       <div class="price-top">
-                        <h4>'.$plan['name'].'</h4>
-                        <h2 class="mb-0"><sup>'.CURRENCY.'</sup>'.number_format($plan['price']).'</h2>
+                        <h4>' . $plan['name'] . '</h4>
+                        <h2 class="mb-0"><sup>' . CURRENCY . '</sup>' . number_format($plan['price']) . '</h2>
                         <span class="text-capitalize">per Month</span>
                       </div>
                       <div class="price-content">
@@ -298,7 +331,7 @@
                           </li>
                           <li>
                             <i class="la la-check font-weight-bold text-primary mr-2"></i>
-                            <span class="c-black">'.$plan['max_products'].' Products</span>
+                            <span class="c-black">' . $plan['max_products'] . ' Products</span>
                           </li>
                           <li>
                             <i class="la ' . ($plan['deal_of_day'] ? 'la-check text-primary' : 'la-times text-danger') . ' font-weight-bold mr-2"></i>
@@ -306,10 +339,10 @@
                           </li>
                           <li>
                             <i class="la ' . ($plan['social_media'] ? 'la-check text-primary' : 'la-times text-danger') . ' font-weight-bold mr-2"></i>
-                            <span class="c-black">' . ($plan['social_media'] ? $plan['social_media'] .' Social Media Posts Per Month' : 'No Social Media Posts') . '</span>
+                            <span class="c-black">' . ($plan['social_media'] ? $plan['social_media'] . ' Social Media Posts Per Month' : 'No Social Media Posts') . '</span>
                           </li>
                         </ul>
-                        <a href="pricing_payment.php?id='.$plan['subscription_id'].'&plan=Monthly" class="btn btn-custom">Select Plan</a>
+                        <a href="pricing_payment.php?id=' . $plan['subscription_id'] . '&plan=Monthly" class="btn btn-custom">Select Plan</a>
                       </div>
                     </div>
                   </div>';
@@ -357,10 +390,35 @@
       }
     }
     
-    public function changeSubscription($newPlanId)
+    public function addSubscription($newPlanId, $months, $transaction_id)
     {
+      // Get vendor id
+      // Get remaining time hence find how much to add to the new plan
+      // activate the latest record for subscription
       $ids      = new Vendors();
       $vendorId = $ids->getVendorId();
+      if ($vendorId !== 0 && $vendorId !== false) {
+        $starts = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
+        $ends   = date("Y-m-d H:i:s", strtotime("+" . $months . " month", $_SERVER['REQUEST_TIME']));
+        $sql    = "INSERT INTO subscribers (vendor_id, transaction_id, subscription_id, subscription_start_date, subscription_end_date, status) VALUES (?, ?, ?, ?, ?, ?)";
+        $params = [
+          $vendorId,
+          $transaction_id,
+          $newPlanId,
+          $starts,
+          $ends,
+          'Inactive'
+        ];
+        if ($this->insertQuery($sql, $params)) {
+          return alert('success', 'Subscription obtained successfully. Wait for admin activation.');
+        } else {
+          return alert('warning', 'Transaction ID already used by someone.');
+        }
+      } else {
+        return '<a href="shop.php" class="btn btn-sm btn-primary btn-block">Add your shop details first</a>';
+      }
+      
+      
       // Check if the vendor has an active subscription
       $currentSubscription = $this->getCurrentSubscription($vendorId);
       
@@ -395,11 +453,27 @@
       //return true;
     }
     
+    public function vendorCurrentPlan()
+    {
+      $data     = new Vendors();
+      $vendorId = $data->getVendorId();
+      $sql      = "SELECT * FROM subscribers WHERE vendor_id=? && status='Active' ";
+      $params   = [$vendorId];
+      $result   = $this->selectQuery($sql, $params);
+      if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+          return $this->getPlanNameById($row['subscription_id']) . ' till ' . dates($row['subscription_end_date']);
+        }
+      } else {
+        return $this->getPlanNameById(1);
+      }
+    }
+    
     private function getCurrentSubscription($vendorId)
     {
       // Retrieve the vendor's current subscription from the database
       // You need to implement this method to fetch the current subscription details
-      $sql    = "SELECT * FROM subscribers WHERE vendor_id = ?";
+      $sql    = "SELECT * FROM subscribers WHERE vendor_id=? && status='Active' ";
       $params = [$vendorId];
       $result = $this->selectQuery($sql, $params)->fetch_assoc();
       
@@ -471,7 +545,7 @@
       // You need to implement this method to update the subscription details.
       return $vendorId . ', ' . $newPlanId . ', ' . $remainingDays . ', ' . $newPlanDuration;
     }
-  
+    
     public function makePayment($data = null)
     {
       if (isset($data['username'])) {
@@ -501,5 +575,5 @@
                   </div>
                 </form>';
       }
-    }
+    } // TODO: remove & usage
   }

@@ -28,6 +28,14 @@
     <section class="content">
       <div class="container-fluid">
         <div class="systemMsg"></div>
+	      <?php
+    
+          if (isset($_POST['planEditBtn']) && $_SERVER['REQUEST_METHOD'] === "POST") {
+            $update = new Subscription();
+            echo $update->updateSubscription($_POST['subscriberId'], $_POST['plan'], $_POST['start_date'], $_POST['end_date']);
+		      }
+	      
+	      ?>
         <!-- Card with Card Tool -->
         <div class="card">
           <div class="card-header">
@@ -57,16 +65,11 @@
                 <thead>
                 <tr>
                   <th>#</th>
+                  <th>Tnx Id</th>
+                  <th>Vendor</th>
                   <th>Plan</th>
-                  <th>Description</th>
-                  <th>Price</th>
                   <th>Duration</th>
-                  <th>Max Products</th>
-                  <th>Deals</th>
-                  <th>Social Media Products</th>
-                  <th>Support</th>
-                  <th>Created</th>
-                  <th>Last Updated</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -75,23 +78,16 @@
                 <?php foreach ($plans as $plan) : ?>
                   <tr>
                     <td><?= $no ?></td>
+                    <td><?= esc($plan['transaction_id']); ?></td>
+                    <td>Whatsapp: <?= whatsapp($plan['whatsapp']); ?><br><?= email($plan['business_email']); ?><br><?= esc($plan['shop_name']); ?></td>
                     <td><?= esc($plan['name']); ?></td>
-                    <td><?= esc($plan['description']); ?></td>
-                    <td><?= CURRENCY ." ". esc($plan['price']); ?></td>
-                    <td><?= esc($plan['duration']); ?></td>
-                    <td><?= esc($plan['max_products']); ?></td>
-                    <td><?= esc($plan['deal_of_day']); ?></td>
-                    <td><?= esc($plan['social_media']); ?></td>
-                    <td><?= esc($plan['customer_support']); ?></td>
-                    <td><?= esc($plan['created_at']); ?></td>
-                    <td><?= esc($plan['updated_at']); ?></td>
-                    <td>
-                      <button class="viewSubscriptionBtn btn btn-xs btn-link text-secondary" data-id="<?= esc($plan['subscription_id']); ?>" data-toggle="tooltip" title="View"><span class="fa fa-eye"></span></button>
-                      <button class="editSubscriptionBtn btn btn-xs btn-link text-success" data-id="<?= esc($plan['subscription_id']); ?>" data-toggle="tooltip" title="Edit"><span class="fa fa-pen-fancy"></span></button>
-                      <button class="btn btn-xs btn-link text-danger" onclick="if (confirm('Are you sure you want to delete this record?')) {$(this).addClass('deleteSubscriptionBtn');}" data-id="<?= esc($plan['subscription_id']); ?>"
-                              data-toggle="tooltip" title="Delete"><span
-                          class="fa
-											fa-trash-alt"></span></button>
+	                  <td><?= dateDiff($plan['subscription_start_date'], $plan['subscription_end_date']); ?><br><em class="text-muted"><?= dates($plan['subscription_start_date']) ?> - <?= dates($plan['subscription_end_date']); ?></em></td>
+                    <td><?= esc($plan['status']); ?></td>
+	                  <td>
+		                  <?php if ($plan['status'] === 'Inactive'): ?>
+			                  <button class="activateSubscriptionPlanBtn btn btn-xs btn-link text-primary" data-id="<?= esc($plan['subscriber_id']); ?>" data-toggle="tooltip" title="Activate Plan"><span class="fa fa-check"></span></button>
+			                  <button class="editSubscriptionPlanBtn btn btn-xs btn-link text-success" data-id="<?= esc($plan['subscriber_id']); ?>" data-toggle="tooltip" title="Edit Subscription"><span class="fa fa-pen-fancy"></span></button>
+                      <?php endif; ?>
                     </td>
                   </tr>
                   <?php $no++; ?>

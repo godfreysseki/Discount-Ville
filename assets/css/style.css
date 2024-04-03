@@ -8574,46 +8574,6 @@ p {
 	text-decoration: none
 }
 
-@media screen and (min-width: 480px) {
-	.just-action-icons-sm .btn-product span {
-		display: none
-	}
-	
-	.just-action-icons-sm .btn-product:before {
-		margin-right: 0
-	}
-}
-
-@media screen and (min-width: 768px) {
-	.just-action-icons-md .btn-product span {
-		display: none
-	}
-	
-	.just-action-icons-md .btn-product:before {
-		margin-right: 0
-	}
-}
-
-@media screen and (min-width: 992px) {
-	.just-action-icons-lg .btn-product span {
-		display: none
-	}
-	
-	.just-action-icons-lg .btn-product:before {
-		margin-right: 0
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	.just-action-icons-xl .btn-product span {
-		display: none
-	}
-	
-	.just-action-icons-xl .btn-product:before {
-		margin-right: 0
-	}
-}
-
 @media screen and (max-width: 1200px) {
 	.product.product-9:hover .product-body, .product.product-9:hover .product-action {
 		transform: translateY(-60%)

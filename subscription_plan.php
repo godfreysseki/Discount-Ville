@@ -33,7 +33,7 @@
                 <?php
                   
                   $data = new Subscription();
-                  echo $data->changeSubscription($_GET['id']);
+                  echo $data->addSubscription($_GET['id'], 3, '472543848867');
                 ?>
               </div>
             </div><!-- End .col-lg-9 -->

@@ -664,7 +664,7 @@
         $('#modal-product .modal-dialog').
             addClass('modal-xl modal-dialog-scrollable');
         $('#modal-product .modal-title').html('Product Quick View');
-        $('#modal-product .modalDetails').html(response);
+        $('#modal-product .modalProductDetails').html(response);
         activateToolTips();
         activateZoom();
         $('#modal-product').modal('show');
@@ -1936,5 +1936,22 @@
       });
     }
   });
+  
+  // Show login modal if not logged in
+  $(document).ready(function() {
+    // Check if the PHP session is not set
+    if (USER && $('#signin-modal').length) {
+      // If user is logged in do nothing
+    } else {
+      // Open the sign-in modal after 5 seconds if the PHP session is not set
+      setTimeout(function() {
+        $('#signin-modal').modal('show');
+      }, 5000); // Open modal after 5 seconds
+    }
+  // Set the default tab to the registration form
+  $('#register-tab').tab('show');
+});
+
+
   
 })(jQuery);

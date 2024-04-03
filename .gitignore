@@ -6,3 +6,6 @@
 
 # Ignore the includes/config.inc.php file
 /includes/config.inc.php
+
+# Ignore the chat GPT test page
+/googleai.php

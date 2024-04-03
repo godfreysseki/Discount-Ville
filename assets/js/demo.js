@@ -1681,6 +1681,57 @@
     });
   });
   
+  // Work on subscribers
+  $(document).on('click', '.activateSubscriptionPlanBtn', function(){
+    var dataId = $(this).data('id');
+    $.ajax({
+      url: 'subscribers_activate_subscription.php',
+      type: 'POST',
+      data: {dataId: dataId},
+      success: function(response){
+        $('.systemMsg').html(response);
+      }
+    });
+  });
+  
+  $(document).on('click', '.editSubscriptionPlanBtn', function(){
+    var dataId = $(this).data('id');
+    $.ajax({
+      url: 'subscribers_edit_subscription.php',
+      type: 'POST',
+      data: {dataId: dataId},
+      success: function(response){
+        $('#modal .modal-dialog').removeClass('modal-lg');
+        $('#modal .modal-title').html('Edit Subscriber Subscription');
+        $('#modal .modalDetails').html(response);
+        $('#modal').modal('show');
+      }
+    });
+  });
+  
+  // Vendor side
+  if ($('#plan').length || $('#months').length) {
+    $(document).on('change', '#plan', function() {
+      var planPrice = $(this).find('option:selected').data('price');
+      var months = $('#months').val();
+      $('.to_pay').html(numberWithCommas(planPrice * months));
+    });
+    
+    $(document).on('change', '#months', function() {
+      var planPrice = $('#plan').find('option:selected').data('price');
+      var months = $(this).val();
+      $('.to_pay').html(numberWithCommas(planPrice * months));
+    });
+  }
+  
+  function numberWithCommas(x)
+  {
+    return parseFloat(x).
+        toFixed(0).
+        toString().
+        replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  
   /**************************
    * Warehouses
    */

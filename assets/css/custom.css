@@ -121,3 +121,53 @@ td img {
 .contact.active a, .contact.active span {
 	color: white !important;
 }
+
+
+/*************
+Google translate
+*/
+#google_translate_element {
+	display: block;
+	z-index: 2000;
+	overflow: hidden;
+	border: 0;
+	position: relative;
+	width: 75px !important;
+}
+
+#google_translate_element select {
+	color: grey;
+	font-weight: lighter;
+	border: 0;
+}
+
+#google_translate_element select option {
+	display: block;
+	padding: 50px !Important;
+}
+
+.skiptranslate.VIpgJd-yAWNEb-L7lbkb, .VIpgJd-ZVi9od-ORHb-OEVmcd.skiptranslate, .goog-te-banner-frame, .VIpgJd-ZVi9od-aZ2wEe {
+	display: none !important;
+	visibility: hidden !important;
+	height: 0 !important;
+}
+
+#google_translate_element {
+	display: none;
+}
+
+.lang {
+	text-transform: uppercase !important;
+}
+
+/* Body */
+body{
+	margin-top:0px;
+	position:relative;
+	top:0px !important;
+}
+
+/* Skiptranslate */
+.skiptranslate{
+	position:absolute;
+}

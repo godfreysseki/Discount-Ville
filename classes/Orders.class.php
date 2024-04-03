@@ -334,7 +334,7 @@
             [$user, $date, $orderNo, $trackingNo, $data['full_name'], $data['email'], $data['telephone'], $totalAmount, $data['contact_person'], $data['contactPhone'], $billing, $delivery, $data['notes'], 'pending']);
           // Transfer order items from cart
           $sql = $this->insertQuery("INSERT INTO salesorderitems (order_id, product_id, quantity, unit_price, total_amount, color, size)
-                            SELECT ?, product_id, quantity, ?, (quantity * ?), color, size  FROM cart WHERE user=?", [$transfer, $this->productPrice($product_id), $this->productPrice($product_id), $user]);
+                            SELECT ?, product_id, quantity, unit_price, total_amount, color, size  FROM cart WHERE user=?", [$transfer, $user]);
           if ($transfer && $sql) {
             $this->deleteQuery("DELETE FROM cart WHERE user=?", [$user]);
             return json_encode(['status' => 'success', 'message' => 'Your order is made successfully.']);
@@ -368,7 +368,7 @@
             [$user, $date, $orderNo, $trackingNo, $data['full_name'], $data['email'], $data['telephone'], $totalAmount, $data['contact_person'], $data['contactPhone'], "g_" . $billing, "g_" . $delivery, $data['notes'], 'pending']);
           // Transfer order items from cart
           $sql = $this->insertQuery("insert into salesorderitems (order_id, product_id, quantity,unit_price, total_amount, color, size)
-                        SELECT " . $transfer . ", product_id, quantity, " . $this->productPrice(product_id) . ", (quantity * " . $this->productPrice(product_id) . "), color, size  from cart where user=?", [$user]);
+                        SELECT " . $transfer . ", product_id, quantity, unit_price, total_amount, color, size  from cart where user=?", [$user]);
           if ($transfer && $sql) {
             $this->deleteQuery("DELETE FROM cart WHERE user=?", [$user]);
             return json_encode(['status' => 'success', 'message' => 'Your order is made successfully.']);

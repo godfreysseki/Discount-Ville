@@ -82,12 +82,12 @@
 			</li>
 			
 			<!-- Subscription Management -->
-			<!--<li class="nav-item">
+			<li class="nav-item">
 				<a href="subscription.php" class="nav-link">
 					<i class="nav-icon fas fa-money-bill"></i>
 					<p>Subscription Management</p>
 				</a>
-			</li>-->
+			</li>
 			
 			<!-- Stock Management -->
 			<li class="nav-item">

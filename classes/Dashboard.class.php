@@ -189,11 +189,11 @@
       $count    = ($user + $address + $shop + $products);
       // Test the cases while enabling the user to complete the steps with a link
       if ($count === 0 || $count === 1) {
-        $action = '<a href="profile.php">Complete Your Profile.</a>';
+        $action = '<a href="profile.php" class="btn btn-xs btn-block mt-3 btn-primary">Complete Your Profile.</a>';
       } elseif ($count === 2) {
-        $action = '<a href="shop.php">Complete Shop Details.</a>';
+        $action = '<a href="shop.php" class="btn btn-xs btn-block mt-3 btn-primary">Complete Shop Details.</a>';
       } elseif ($count === 3) {
-        $action = '<a href="products.php">Add a Product.</a>';
+        $action = '<a href="products.php" class="btn btn-xs btn-block mt-3 btn-primary">Add a Product.</a>';
       } else {
         $action = '100% Completed';
       }

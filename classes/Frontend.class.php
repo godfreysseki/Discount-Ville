@@ -25,7 +25,7 @@
 								<figure class="slide-image">
 									<picture>
 										<source media="(max-width: 480px)" srcset="assets/img/slides/slide-1-480w.jpg">
-										<img src="assets/img/slides/slide-1.jpg" alt="Image Desc">
+										<img src="assets/img/slides/slide-1.jpg" width="100%" alt="Image Desc">
 									</picture>
 								</figure><!-- End .slide-image -->
 								
@@ -50,7 +50,7 @@
 								<figure class="slide-image">
 									<picture>
 										<source media="(max-width: 480px)" srcset="assets/img/slides/slide-2-480w.jpg">
-										<img src="assets/img/slides/slide-2.jpg" alt="Image Desc">
+										<img src="assets/img/slides/slide-2.jpg" width="100%" alt="Image Desc">
 									</picture>
 								</figure><!-- End .slide-image -->
 								
@@ -78,7 +78,7 @@
 								<figure class="slide-image">
 									<picture>
 										<source media="(max-width: 480px)" srcset="assets/img/slides/slide-3-480w.jpg">
-										<img src="assets/img/slides/slide-3.jpg" alt="Image Desc">
+										<img src="assets/img/slides/slide-3.jpg" width="100%" alt="Image Desc">
 									</picture>
 								</figure><!-- End .slide-image -->
 								
@@ -140,7 +140,7 @@
                       <a href="category.php?id=' . $row['category_id'] . '" class="cat-block">
                         <figure>
                             <span>
-                              <img src="assets/img/categories/' . $row['banner'] . '" alt="Category image">
+                              <img src="assets/img/categories/' . $row['banner'] . '" width="100%" alt="Category image">
                             </span>
                         </figure>
                         <p class="m-0 p-0 text-center" class="cat-block-title">' . $row['category_name'] . '</p><!-- End .cat-block-title -->
@@ -300,7 +300,7 @@
               INNER JOIN vendors ON products.vendor_id=vendors.vendor_id
               WHERE (deals.end_date IS NULL OR deals.end_date >= CURRENT_TIMESTAMP)
               GROUP BY products.product_id
-              ORDER BY products.total_views DESC LIMIT 18';
+              ORDER BY products.total_views DESC';// LIMIT 18
       $result   = $this->selectQuery($sql);
       while ($row = $result->fetch_assoc()) {
         $products[] = $row;
@@ -364,17 +364,17 @@
                         <figure class="product-media p-0">
                           ' . $top . $new . $discount . '
                           <a href="product.php?id=' . $row['productId'] . '">
-                            <img src="assets/img/products/' . $imgs[0] . '" alt="Product image" class="product-image">
-                            <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" alt="Product image" class="product-image-hover">
+                            <img src="assets/img/products/' . $imgs[0] . '" width="100%" alt="Product image" class="product-image">
+                            <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" width="100%" alt="Product image" class="product-image-hover">
                           </a>
                           ' . $hoursLeft . '
                           <div class="product-action-vertical">
-                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
-                            <a href="javascript:void(0)" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
-                            <a href="javascript:void(0)" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
+                            <a href="#" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
+                            <a href="#" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
+                            <a href="#" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['productId'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
                           </div><!-- End .product-action-vertical -->
                           <div class="product-action product-action-dark">
-                            <a href="javascript:void(0)" class="btn-product btn-cart cartBtn" data-id="' . $row['productId'] . '"><span>Cart</span></a>
+                            <a href="#" class="btn-product btn-cart cartBtn" data-id="' . $row['productId'] . '"><span>Cart</span></a>
                             <a href="chat.php?vendor=' . $row['vendor_id'] . '&prod=' . $row['productId'] . '" class="btn-product btn-chat" title="Chat with Vendor"><span class="icon-comments">&nbsp;&nbsp;Chat</span></a>
                           </div><!-- End .product-action -->
                         </figure><!-- End .product-media -->
@@ -422,17 +422,17 @@
                           <figure class="product-media p-0">
                             ' . $top . $new . $discount . '
                             <a href="product.php?id=' . $item['productId'] . '">
-                              <img src="assets/img/products/' . $imgs[0] . '" alt="Product image" class="product-image">
-                              <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" alt="Product image" class="product-image-hover">
+                              <img src="assets/img/products/' . $imgs[0] . '" width="100%" alt="Product image" class="product-image">
+                              <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" width="100%" alt="Product image" class="product-image-hover">
                             </a>
                             ' . $hoursLeft . '
                             <div class="product-action-vertical">
-                              <a href="javascript:void(0)" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
-                              <a href="javascript:void(0)" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
-                              <a href="javascript:void(0)" class="btn-product-icon btn-compare compareBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
+                              <a href="#" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
+                              <a href="#" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
+                              <a href="#" class="btn-product-icon btn-compare compareBtn" data-id="' . $item['productId'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
                             </div><!-- End .product-action-vertical -->
                             <div class="product-action product-action-dark">
-                              <a href="javascript:void(0)" class="btn-product btn-cart cartBtn" data-id="' . $item['productId'] . '"><span>Cart</span></a>
+                              <a href="#" class="btn-product btn-cart cartBtn" data-id="' . $item['productId'] . '"><span>Cart</span></a>
                               <a href="chat.php?vendor=' . $item['vendor_id'] . '&prod=' . $item['productId'] . '" class="btn-product btn-chat" title="Chat with Vendor"><span class="icon-comments">&nbsp;&nbsp;Chat</span></a>
                             </div><!-- End .product-action -->
                           </figure><!-- End .product-media -->
@@ -582,14 +582,14 @@
                       <figure class="product-media">
                         ' . $top . $new . $discount . '
                         <a href="product.php?id=' . $row['product_id'] . '">
-                          <img src="assets/img/products/' . $imgs[0] . '" alt="Product image" class="product-image">
-                          <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" alt="Product image" class="product-image-hover">
+                          <img src="assets/img/products/' . $imgs[0] . '" width="100%" alt="Product image" class="product-image">
+                          <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" width="100%" alt="Product image" class="product-image-hover">
                         </a>
                         ' . $hoursLeft . '
                         <div class="product-action-vertical">
-                          <a href="javascript:void(0)" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
-                          <a href="javascript:void(0)" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
-                          <a href="javascript:void(0)" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
+                          <a href="#" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
+                          <a href="#" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
+                          <a href="#" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
                         </div><!-- End .product-action-vertical -->
                         <div class="product-action">
                           <a href="#" class="btn-product btn-cart cartBtn" data-id="' . $row['product_id'] . '"><span>Cart</span></a>
@@ -627,7 +627,7 @@
                 <div class="col-md-6">
                   <div class="banner banner-overlay">
                     <a href="#">
-                      <img src="assets/images/demos/demo-14/banners/banner-7.jpg" alt="Banner img desc">
+                      <img src="assets/images/demos/demo-14/banners/banner-7.jpg" width="100%" alt="Banner img desc">
                     </a>
                     
                     <div class="banner-content">
@@ -641,7 +641,7 @@
                 <div class="col-md-6">
                   <div class="banner banner-overlay">
                     <a href="#">
-                      <img src="assets/images/demos/demo-14/banners/banner-8.jpg" alt="Banner img desc">
+                      <img src="assets/images/demos/demo-14/banners/banner-8.jpg" width="100%" alt="Banner img desc">
                     </a>
                     
                     <div class="banner-content">
@@ -665,7 +665,7 @@
         echo '<div class="col-lg-4 col-md-6 mb-4">';
         echo '<div class="product">';
         echo '<div class="product-image">';
-        echo '<img src="./assets/img/products/' . $image . '" alt="' . $product['product_name'] . '">';
+        echo '<img src="./assets/img/products/' . $image . '" width="100%" alt="' . $product['product_name'] . '">';
         echo '</div>';
         echo '<div class="product-info">';
         echo '<h2>' . $product['product_name'] . '</h2>';
@@ -703,7 +703,7 @@
       echo '<h1>' . $product['product_name'] . '</h1>';
       echo '<div class="product-image">';
       // Add product image here
-      echo '<img src="' . $product['image_url'] . '" alt="' . $product['product_name'] . '">';
+      echo '<img src="' . $product['image_url'] . '" width="100%" alt="' . $product['product_name'] . '">';
       echo '</div>';
       echo '<p>' . $product['product_description'] . '</p>';
       echo '<p>Price: $' . $product['price'] . '</p>';
@@ -789,7 +789,7 @@
       echo '<tbody><tr>';
       echo '<td></td>';
       foreach ($products as $product) {
-        echo '<td><img src="assets/img/products/' . explode(", ", $product['product_image'])[0] . '" alt="product image"></td>';
+        echo '<td><img src="assets/img/products/' . explode(", ", $product['product_image'])[0] . '" width="100%" alt="product image"></td>';
       }
       echo '</tr>';
       
@@ -834,7 +834,7 @@
         $colors = explode(', ', $product['color']);
         echo '<td>';
         foreach ($colors as $color) {
-          echo '<a href="javascript:void(0)" style="background: ' . $color . '; display: inline-block" class="color-display">';
+          echo '<a href="#" style="background: ' . $color . '; display: inline-block" class="color-display">';
         }
         echo '</td>';
       }
@@ -935,7 +935,7 @@
 							<div class="product">
 								<figure class="product-media">
 									<a href="product.php?id=' . $item['product_id'] . '">
-										<img src="assets/img/products/' . explode(", ", $item['product_image'])[0] . '" alt="Product image">
+										<img src="assets/img/products/' . explode(", ", $item['product_image'])[0] . '" width="100%" alt="Product image">
 									</a>
 								</figure>
 								
@@ -998,7 +998,7 @@
 										<div class="product">
 											<figure class="product-media">
 												<a href="product.php?id=' . $item['product_id'] . '">
-													<img src="assets/img/products/' . explode(", ", $item['product_image'])[0] . '" alt="Product image">
+													<img src="assets/img/products/' . explode(", ", $item['product_image'])[0] . '" width="100%" alt="Product image">
 												</a>
 											</figure>
 											
@@ -1183,25 +1183,36 @@
         return json_encode(['status' => 'warning', 'message' => 'Product Removal from Wishlist Failed.']);
       }
     }
+  
+    public function productPrice($productId)
+    {
+      $sql    = "SELECT current_price FROM products WHERE product_id=?";
+      $params = [$productId];
+      $row    = $this->selectQuery($sql, $params)->fetch_assoc();
+      return $row['current_price'];
+    }
     
     // Method to add a product to the shopping cart
     public function addToShoppingCart($productId)
     {
       $user  = esc($_SESSION['username']);
       $check = "SELECT * FROM cart WHERE product_id=? && user=?";
-      if ($this->selectQuery($check, [$productId, $user])->num_rows > 0) {
-        // Update Cart by increaing quantity
-        $sql    = "UPDATE cart SET quantity=quantity+1 WHERE product_id=? && user=?";
-        $params = [$productId, $user];
-        if ($this->insertQuery($sql, $params)) {
+      $params = [$productId, $user];
+      $result = $this->selectQuery($check, $params);
+      if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // Update Cart by increasing quantity
+        $sql    = "UPDATE cart SET quantity=quantity+1, total_amount=? WHERE product_id=? && user=?";
+        $params = [(($row['quantity'] + 1) * $this->productPrice($productId)), $productId, $user];
+        if ($this->updateQuery($sql, $params)) {
           return json_encode(['status' => 'success', 'message' => 'Product Quantity in Cart Updated Successfully.']);
         } else {
           return json_encode(['status' => 'warning', 'message' => 'Product Quantity Updates Failed.']);
         }
       } else {
         // Insert the product to cart
-        $sql    = "INSERT INTO cart (user, product_id, quantity) VALUES (?, ?, ?)";
-        $params = [$user, $productId, 1];
+        $sql    = "INSERT INTO cart (user, product_id, quantity, unit_price, total_amount) VALUES (?, ?, ?, ?, ?)";
+        $params = [$user, $productId, 1, $this->productPrice($productId), $this->productPrice($productId)];
         if ($this->insertQuery($sql, $params)) {
           return json_encode(['status' => 'success', 'message' => 'Product Added to Cart Successfully.']);
         } else {
@@ -1249,15 +1260,15 @@
     }
     
     // Add more methods for other frontend features here
-    public function listMyCompare()
+    public function listMyCompare() // TODO: Remove, unused
     {
       return '<ul class="compare-products">
 												<li class="compare-product">
-													<a href="javascript:void(0)" class="btn-remove" title="RemoveCompareProduct Remove Product"><i class="icon-close"></i></a>
+													<a href="#" class="btn-remove" title="RemoveCompareProduct Remove Product"><i class="icon-close"></i></a>
 													<h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>
 												</li>
 												<li class="compare-product">
-													<a href="javascript:void(0)" class="btn-remove" title="RemoveCompareProduct Remove Product"><i class="icon-close"></i></a>
+													<a href="#" class="btn-remove" title="RemoveCompareProduct Remove Product"><i class="icon-close"></i></a>
 													<h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>
 												</li>
 											</ul>';
@@ -1285,10 +1296,10 @@
 													</div><!-- End .product-cart-details -->
 													<figure class="product-image-container">
 														<a href="product.php?id=' . $row['productId'] . '" class="product-image">
-															<img src="assets/img/products/' . explode(", ", $row['product_image'])[0] . '" alt="product">
+															<img src="assets/img/products/' . explode(", ", $row['product_image'])[0] . '" width="100%" alt="product">
 														</a>
 													</figure>
-													<a href="javascript:void(0)" class="btn-remove removeCartBtn" title="RemoveFromCart Remove Product"><i class="icon-close"></i></a>
+													<a href="#" class="btn-remove removeCartBtn" data-id="'.$row['cart_id'].'" title="Remove Product"><i class="icon-close"></i></a>
 												</div><!-- End .product -->';
           
         }
@@ -1468,7 +1479,7 @@
         if ($hasSubcategories && $category['parent_category_id'] == 0) {
           
           echo '<li class="megamenu-container">' . PHP_EOL;
-          echo '<a class="sf-with-ul px-5" href="javascript:void(0)">' . $category['category_name'] . '</a>' . PHP_EOL;
+          echo '<a class="sf-with-ul px-5" href="#">' . $category['category_name'] . '</a>' . PHP_EOL;
           
           echo '<div class="megamenu">';
           echo '<div class="row no-gutters">';
@@ -1482,7 +1493,7 @@
           echo '<div class="col-md-4">
                   <div class="banner banner-overlay">
                     <a href="category.php?id=' . $category['category_id'] . '" class="banner banner-menu">
-                      <img src="assets/img/categories/' . $category['banner'] . '" alt="' . COMPANY . ' Banner">
+                      <img src="assets/img/categories/' . $category['banner'] . '" width="100%" alt="' . COMPANY . ' Banner">
                     </a>
                   </div><!-- End .banner banner-overlay -->
                 </div><!-- End .col-md-4 -->';
@@ -1670,17 +1681,17 @@
 										<figure class="product-media">
 											' . $top . $new . $discount . '
 											<a href="product.php?id=' . $row['product_id'] . '">
-                        <img src="assets/img/products/' . $imgs[0] . '" alt="Product image" class="product-image">
-                        <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" alt="Product image" class="product-image-hover">
+                        <img src="assets/img/products/' . $imgs[0] . '" width="100%" alt="Product image" class="product-image">
+                        <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" width="100%" alt="Product image" class="product-image-hover">
 											</a>
 											' . $hoursLeft . '
 											<div class="product-action-vertical">
-												<a href="javascript:void(0)" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
-												<a href="javascript:void(0)" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
-												<a href="javascript:void(0)" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
+												<a href="#" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
+												<a href="#" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
+												<a href="#" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
 											</div><!-- End .product-action-vertical -->
 											<div class="product-action">
-												<a href="javascript:void(0)" class="btn-product btn-cart cartBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to Cart"><span>Cart</span></a>
+												<a href="#" class="btn-product btn-cart cartBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to Cart"><span>Cart</span></a>
                         <a href="chat.php?vendor=' . $row['vendor_id'] . '&prod=' . $row['product_id'] . '" class="btn-product btn-chat" title="Chat with Vendor"><span class="icon-comments">&nbsp;&nbsp;Chat</span></a>
 											</div><!-- End .product-action -->
 										</figure><!-- End .product-media -->
@@ -1819,17 +1830,17 @@
                       <figure class="product-media">
                         ' . $top . $new . $discount . '
                         <a href="product.php?id=' . $row['product_id'] . '">
-                          <img src="assets/img/products/' . $imgs[0] . '" alt="Product image" class="product-image">
-                          <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" alt="Product image" class="product-image-hover">
+                          <img src="assets/img/products/' . $imgs[0] . '" width="100%" alt="Product image" class="product-image">
+                          <img src="assets/img/products/' . (isset($imgs[1]) ? $imgs[1] : $imgs[0]) . '" width="100%" alt="Product image" class="product-image-hover">
                         </a>
                         ' . $hoursLeft . '
                         <div class="product-action-vertical">
-                          <a href="javascript:void(0)" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
-                          <a href="javascript:void(0)" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
-                          <a href="javascript:void(0)" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
+                          <a href="#" class="btn-product-icon btn-wishlist wishlistBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Add to wishlist"><span>Add to wishlist</span></a>
+                          <a href="#" class="btn-product-icon btn-quickview quickviewBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Quick view"><span>Quick view</span></a>
+                          <a href="#" class="btn-product-icon btn-compare compareBtn" data-id="' . $row['product_id'] . '" data-toggle="tooltip" title="Compare"><span>Compare</span></a>
                         </div><!-- End .product-action-vertical -->
                         <div class="product-action">
-                          <a href="javascript:void(0)" class="btn-product btn-cart cartBtn" data-id="' . $row['product_id'] . '" title="Add to cart"><span>Add to cart</span></a>
+                          <a href="#" class="btn-product btn-cart cartBtn" data-id="' . $row['product_id'] . '" title="Add to cart"><span>Add to cart</span></a>
                         </div><!-- End .product-action -->
                       </figure><!-- End .product-media -->
                       <div class="product-body">
@@ -1875,13 +1886,13 @@
       $images  = '';
       // Loops through the colors from the database
       foreach ($colors as $color) {
-        $colored .= '<a href="javascript:void(0)" style="background: ' . $color . ';"></a>';
+        $colored .= '<a href="#" style="background: ' . $color . ';"></a>';
       }
       // Loop through product images from the database
       $no = 1;
       foreach ($imgs as $img) {
-        $images .= '<a class="product-gallery-item ' . (($no === 1) ? "active" : "") . '" href="javascript:void(0)" data-image="assets/img/products/' . $img . '" data-zoom-image="assets/img/products/' . $img . '">
-                      <img src="assets/img/products/' . $img . '" alt="product side">
+        $images .= '<a class="product-gallery-item ' . (($no === 1) ? "active" : "") . '" href="#" data-image="assets/img/products/' . $img . '" data-zoom-image="assets/img/products/' . $img . '">
+                      <img src="assets/img/products/' . $img . '" width="100%" alt="product side">
                     </a>';
         $no++;
       }
@@ -1898,7 +1909,7 @@
                     <div class="product-gallery product-gallery-vertical">
                       <div class="row">
                         <figure class="product-main-image">
-                          <img id="product-zoom" src="assets/img/products/' . $imgs[0] . '" data-zoom-image="assets/images/products/' . $imgs[0] . '" alt="product image">
+                          <img id="product-zoom" src="assets/img/products/' . $imgs[0] . '" data-zoom-image="assets/images/products/' . $imgs[0] . '" width="100%" alt="product image">
                         </figure><!-- End .product-main-image -->
                         
                         <div id="product-zoom-gallery" class="product-image-gallery">
@@ -1916,7 +1927,7 @@
                         <div class="ratings" data-toggle="tooltip" title="' . $row['average_stars'] . ' Star Rating">
                           <div class="ratings-val" style="width: ' . round($row['average_stars'] * 10) . '%;"></div><!-- End .ratings-val -->
                         </div><!-- End .ratings -->
-                        <a class="ratings-text" href="javascript:void(0)" id="review-link">(' . number_format($row['total_reviews']) . ' Reviews )</a>
+                        <a class="ratings-text" href="#" id="review-link">(' . number_format($row['total_reviews']) . ' Reviews )</a>
                       </div><!-- End .rating-container -->
                       
                       <div class="product-price">
@@ -1940,8 +1951,8 @@
                       <div class="product-details-action product-page">
                         <a href="#" class="btn-product btn-cart"><span>Add to cart</span></a>
                         <a href="chat.php?vendor=' . $row['vendor_id'] . '&prod=' . $row['product_id'] . '" class="btn-product btn-contact"><span>Contact Vendor</span></a>
-                        <a href="javascript:void(0)" class="btn-product btn-wishlist wishlistBtn" data-toggle="tooltip" title="Wishlist"><span>Add to Wishlist</span></a>
-                        <a href="javascript:void(0)" class="btn-product btn-compare CompareBtn" data-toggle="tooltip" title="Compare"><span>Add to Compare</span></a>
+                        <a href="#" class="btn-product btn-wishlist wishlistBtn" data-toggle="tooltip" title="Wishlist"><span>Add to Wishlist</span></a>
+                        <a href="#" class="btn-product btn-compare CompareBtn" data-toggle="tooltip" title="Compare"><span>Add to Compare</span></a>
                       </div><!-- End .product-details-action -->
                       
                       <div class="product-details-footer">

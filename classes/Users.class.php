@@ -221,11 +221,12 @@
       }
     }
     
-    public function loginUser($username, $password)
+    public function loginUser($username, $password, $remember = false)
     {
       $sql    = "SELECT user_id, username, full_name, password, role FROM users WHERE username = ? || email = ?";
       $params = [$username, $username];
       $result = $this->selectQuery($sql, $params);
+      
       if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if (password_verify($password, $user['password'])) {
@@ -242,6 +243,15 @@
           $_SESSION['user']     = $user['full_name'];
           $_SESSION['username'] = $user['username'];
           $_SESSION['role']     = $user['role'];
+          
+          if ($remember) {
+            // Set a cookie to remember the user
+            $cookie_name   = "dv_remember_me";
+            $cookie_value  = $user['username'];
+            $cookie_expiry = time() + (30 * 24 * 3600); // 30 days
+            setcookie($cookie_name, $cookie_value, $cookie_expiry, "/");
+          }
+          
           switch ($_SESSION['role']) {
             case 'Admin':
               echo "<script>window.location.href=('admin/')</script>";
@@ -253,10 +263,53 @@
               echo "<script>window.location.href=('./dashboard.php')</script>";
           }
         } else {
-          echo alert('warning', 'You have a wrong password.');
+          echo alert('warning', 'You have entered a wrong password.');
         }
       } else {
         echo alert('warning', 'Check your Username/Email and Password.');
+      }
+    }
+    
+    public function autoLogin($user)
+    {
+      $sql    = "SELECT user_id, username, full_name, password, role FROM users WHERE username = ? || email = ?";
+      $params = [$user, $user];
+      $result = $this->selectQuery($sql, $params);
+      
+      if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        // Password is correct, set up the session
+        // First change the guest session details in the tables and then assign the new login credentials
+        if (isset($_SESSION['username'])) {
+          $this->updateCartSession($user['username']);
+          $this->updateWishlistSession($user['username']);
+          $this->updateChatSession($user['username']);
+          $this->updateCompareSession($user['username']);
+          $this->updateSalesOrdersSession($user['username']);
+        }
+        $_SESSION['user_id']  = $user['user_id'];
+        $_SESSION['user']     = $user['full_name'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role']     = $user['role'];
+        
+        // Set a cookie to remember the user
+        $cookie_name   = "dv_remember_me";
+        $cookie_value  = $user['username'];
+        $cookie_expiry = time() + (30 * 24 * 3600); // 30 days
+        setcookie($cookie_name, $cookie_value, $cookie_expiry, "/");
+        
+        switch ($_SESSION['role']) {
+          case 'Admin':
+            header('location:'.rtrim(URL, '/').'/admin/');
+            break;
+          case 'Vendor':
+            header('location:'.rtrim(URL, '/').'/vendor/');
+            break;
+          default:
+            header('location:'.rtrim(URL, '/').'/dashboard.php');
+        }
+      } else {
+        echo alert('warning', 'You have entered a wrong password.');
       }
     }
     
@@ -338,6 +391,7 @@
     
     public function logoutUser()
     {
+      setcookie("dv_remember_me", "", time() - 3600, "/");
       session_unset();
       session_destroy();
       header('location: ./');
@@ -407,12 +461,12 @@
         // Update Profile image
         if (!empty($_FILES["profimg"]["name"])) {
           // Get old image and delete it from folder
-          $gets = "SELECT user_image FROM users WHERE username=? ";
+          $gets   = "SELECT user_image FROM users WHERE username=? ";
           $params = [$_SESSION['username']];
-          $get  = $this->selectQuery($gets, $params);
+          $get    = $this->selectQuery($gets, $params);
           if ($get->num_rows > 0) {
             while ($row = $get->fetch_array()) {
-              $imager = '../assets/img/users/'.$row['user_image'];
+              $imager = '../assets/img/users/' . $row['user_image'];
               // Remove Image
               if (file_exists($imager)) {
                 unlink($imager);
@@ -428,7 +482,7 @@
             $newName = $timer . "." . $extension;
             
             // Write to database image and system log
-            $datas = "UPDATE users SET user_image=? WHERE username=? ";
+            $datas  = "UPDATE users SET user_image=? WHERE username=? ";
             $params = [$newName, $_SESSION['username']];
             $this->updateQuery($datas, $params);
             return alert('success', 'Image Updated Successfully');

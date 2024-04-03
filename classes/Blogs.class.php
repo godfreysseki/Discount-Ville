@@ -540,6 +540,7 @@
                               <p><small><i>Your email address will not be published.<br>Required fields are marked * </i></small></p>
                               <form method="POST" action="forms/blog_comment.php" role="form" class="php-email-form" id="commentform">
                                 <div class="row">
+                                  <input name="post" id="post" type="hidden" class="form-control" value="' . $_GET['id'] . '" required>
                                   <input name="commentId" id="commentId" type="hidden" class="form-control" value="0" required>
                                   <div class="col-md-6 form-group">
                                     <input name="name" type="text" class="form-control" placeholder="Your Name*">
@@ -677,12 +678,12 @@
           $data .= '<li>
                     <figure>
                       <a href="blog.php?id=' . ($row['bid']) . '">
-                        <img src="'.str_replace("../", "", explode(', ', $row['image']))[0].'" alt="post">
+                        <img src="' . str_replace("../", "", explode(', ', $row['image']))[0] . '" alt="post">
                       </a>
                     </figure>
                     
                     <div>
-                      <span>'.date('M d, Y', strtotime($row['regdate'])).'</span>
+                      <span>' . date('M d, Y', strtotime($row['regdate'])) . '</span>
                       <h4><a href="blog.php?id=' . ($row['bid']) . '">' . $row['title'] . '</a></h4>
                     </div>
                   </li>';
@@ -735,23 +736,23 @@
         while ($row = $result->fetch_assoc()) {
           $data .= '<article class="entry">
                       <figure class="entry-media">
-                        <a href="blog.php?id='.($row['bid']).'">
+                        <a href="blog.php?id=' . ($row['bid']) . '">
                           <img src="' . explode(", ", str_replace("../", "", $row['image']))[0] . '" alt="Image" style="height: 200px; object-fit: fill; margin: auto">
                         </a>
                       </figure><!-- End .entry-media -->
                       
                       <div class="entry-body">
                         <div class="entry-meta">
-                          <a href="#">'.dates($row['regdate']).'</a>, ' . $this->blogCommentsCount($row['bid']) . ' Comments
+                          <a href="#">' . dates($row['regdate']) . '</a>, ' . $this->blogCommentsCount($row['bid']) . ' Comments
                         </div><!-- End .entry-meta -->
                         
                         <h3 class="entry-title">
-                          <a href="blog.php?id='.($row['bid']).'">' . $row['title'] . '</a>
+                          <a href="blog.php?id=' . ($row['bid']) . '">' . $row['title'] . '</a>
                         </h3><!-- End .entry-title -->
                         
                         <div class="entry-content">
-                          <p>'.reduceWords(nl2br(strip_tags($row['description'])), 90).'</p>
-                          <a href="blog.php?id='.($row['bid']).'" class="read-more">Read More</a>
+                          <p>' . reduceWords(nl2br(strip_tags($row['description'])), 90) . '</p>
+                          <a href="blog.php?id=' . ($row['bid']) . '" class="read-more">Read More</a>
                         </div><!-- End .entry-content -->
                       </div><!-- End .entry-body -->
                     </article><!-- End .entry -->';
@@ -820,27 +821,27 @@
       
       return $data;
     }
-  
+    
     public function showBlogsCategoriesSingleBlog()
     {
-      $data = '';
-      $sql = "SELECT * FROM blogs_categories ORDER BY category ASC";
+      $data   = '';
+      $sql    = "SELECT * FROM blogs_categories ORDER BY category ASC";
       $result = $this->selectQuery($sql);
       while ($row = $result->fetch_assoc()) {
-        $data .= '<li><a href="blogs.php">'.$row['category'].'<span>'.$this->categoryBlogsCount($row['bcid']).'</span></a></li>';
+        $data .= '<li><a href="blogs.php">' . $row['category'] . '<span>' . $this->categoryBlogsCount($row['bcid']) . '</span></a></li>';
       }
       return $data;
     }
     
     public function writeComment($post, $commentId, $full_name, $email, $comment)
     {
-      $art   = ($post);
-      $reply = (is_int($commentId) ? 0 : ($commentId));
-      $name  = esc($full_name);
-      $mail  = esc($email);
-      $com   = esc($comment);
-      $date  = date("Y-m-d H:i:s", $_SERVER['REQUEST_TIME']);
-      $sql   = "INSERT INTO blog_comments (post, commentId, full_name, email, comment, regdate) VALUES (?, ?, ?, ?, ?, ?)";
+      $art    = ($post);
+      $reply  = (is_int($commentId) ? 0 : ($commentId));
+      $name   = esc($full_name);
+      $mail   = esc($email);
+      $com    = esc($comment);
+      $date   = date("Y-m-d H:i:s", $_SERVER['REQUEST_TIME']);
+      $sql    = "INSERT INTO blog_comments (post, commentId, full_name, email, comment, regdate) VALUES (?, ?, ?, ?, ?, ?)";
       $params = [$art, $reply, $name, $mail, $com, $date];
       if ($this->insertQuery($sql, $params)) {
         echo "Comment added successfully";
@@ -897,8 +898,9 @@
     public function listReplies($postId, $commentId)
     {
       $data   = '';
-      $sql    = "SELECT * FROM blog_comments WHERE post=0 && commentId='" . $commentId . "' ";
-      $result = $this->selectQuery($sql);
+      $sql    = "SELECT * FROM blog_comments WHERE post=? && commentId=? ";
+      $params = [$postId, $commentId];
+      $result = $this->selectQuery($sql, $params);
       if ($result->num_rows > 0) {
         $data .= '<ul>';
         while ($row = $result->fetch_assoc()) {
@@ -972,7 +974,7 @@
         $imgs = (str_contains($row['image'], ", ")) ? explode(", ", $row['image']) : [$row['image']];
         foreach ($imgs as $img) {
           $data .= '<a href="blog.php?id=' . ($bid) . '">
-                      <img src="' . URL . '' . str_replace("../", "", $img) . '" alt="blog image">
+                      <img src="' . URL . '' . str_replace("../", "", $img) . '" alt="blog image" width="100%">
                     </a>';
         }
       }
@@ -1026,8 +1028,8 @@
     {
       $blogs  = '';
       $id     = ($blogId);
-      $sql    = "SELECT * FROM blogs WHERE bid!=? ORDER BY RAND() LIMIT 8";
-      $params = [$id];
+      $sql    = "SELECT * FROM blogs WHERE bid!=? && category=? ORDER BY RAND() LIMIT 8";
+      $params = [$id, $this->blogCategoryId($id)];
       $result = $this->selectQuery($sql, $params);
       if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -1058,6 +1060,14 @@
       }
       
       return $blogs;
+    }
+    
+    private function blogCategoryId($blogId)
+    {
+      $sql    = "SELECT category FROM blogs WHERE bid=?";
+      $params = [$blogId];
+      $row    = $this->selectQuery($sql, $params)->fetch_assoc();
+      return $row['category'];
     }
     
   }

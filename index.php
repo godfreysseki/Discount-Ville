@@ -172,10 +172,10 @@
     },
   });*/
 
-  $(document).ready(function() {
+/*  $(document).ready(function() {
     const productsContainer = $('.products');
     const loadMoreButton = $('<div class="more-container text-center mt-5"><button type="button" class="btn btn-outline-lightgray btn-more btn-round"><span>View more products</span><i class="icon-long-arrow-right"></i></button></div>');
-    const productsPerPage = 6;
+    const productsPerPage = 12;
     let currentPage = 1;
   
     // Hide all products initially
@@ -204,7 +204,7 @@
         loadMoreButton.hide();
       }
     }
-  });
+  });*/
 
 
 </script>

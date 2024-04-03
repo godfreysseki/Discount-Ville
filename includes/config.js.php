@@ -11,3 +11,4 @@
   echo 'const COMPANYPHONE = "' . COMPANYPHONE . '";';
   echo 'const COMPANYPHONE2 = "' . COMPANYPHONE2 . '";';
   echo 'const CURRENCY = "' . CURRENCY . '";';
+  echo 'const USER = "'.(isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null).'"';

@@ -2,115 +2,132 @@
   
   include_once "../includes/adminHeader.inc.php";
   
-  $data = new Frontend();
-  $check = new Vendors();
+  $data  = new Subscription();
 
 ?>
-  
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1><?= PAGE ?> Management</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active"><?= PAGE ?></li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="systemMsg"></div>
-        <?php
-          
-          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $addProduct = new Frontend();
-            $id         = $addProduct->addProductClient($_POST);
-            echo alert($id['status'], $id['message']);
-          }
-        
-        ?>
-        <!-- Card with Card Tool -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title"><?= PAGE ?> List</h3>
-            <div class="card-tools">
-              <!-- Dropdown Menu -->
-              <div class="dropdown">
-                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                  <i class="fas fa-wrench"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a href="javascript:void(0)" class="addProductBtn dropdown-item">Add Product</a>
-                </div>
-              </div>
-              <!-- End Dropdown Menu -->
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-sm table-hover table-condensed table-striped dataTable">
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Image</th>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Stock</th>
-                  <th>Reorder Level</th>
-                  <th>Original Price</th>
-                  <th>Selling Price</th>
-                  <th>Views</th>
-                  <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
+	
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1><?= PAGE ?> Management</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="index.php">Home</a></li>
+							<li class="breadcrumb-item active"><?= PAGE ?></li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="systemMsg"></div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">New Subscription</h5>
+							</div>
+							<div class="card-body py-2">
+								<?php
+									
+                  if (isset($_POST['subscribeBtn']) && $_SERVER['REQUEST_METHOD'] === "POST") {
+	                  echo $data->addSubscription($_POST['plan'], $_POST['months'], $_POST['tnx_id']);
+									}
+                  
+                  echo "<h5 class='card-title'>Current Plan: <b>".$data->vendorCurrentPlan()."</b></h5><br><br>";
+								
+								?>
+								
+								<form method="post">
+									<div class="form-group">
+										<label for="plan">Subscription Plan</label>
+										<select name="plan" id="plan" class="custom-select select2">
+											<?= $data->getSubscriptionPlansComboOptions() ?>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="months">Time (Months)</label>
+										<input type="number" min="1" max="48" value="1" name="months" id="months" class="form-control">
+									</div>
+									<div class="form-group text-success">
+										You will send <b class="to_pay">0</b> to <b><?= COMPANYPHONE ?></b>(Ismail) and record the transaction id below.
+									</div>
+									<div class="form-group">
+										<label for="tnx_id">Transaction ID</label>
+										<input type="text" name="tnx_id" id="tnx_id" class="form-control">
+									</div>
+									<div class="form-group">
+										<input type="submit" name="subscribeBtn" value="Subscribe" class="btn btn-sm btn-primary float-right">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<!-- Card with Card Tool -->
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title"><?= PAGE ?> Plans</h3>
+							</div>
+							<div class="card-body">
                 <?php
                   
-                  $no       = 1;
-                  $products = $data->listMyProducts();
-                  foreach ($products as $product) {
-                    $img = explode(", ", $product['product_image'])[0];
-                    echo '<tr>
-																	<td>' . $no . '</td>
-																	<td><img src="../assets/img/products/' . $img . '" alt="' . $product['product_name'] . ' Image"></td>
-																	<td>' . $product['product_name'] . '</td>
-																	<td>' . $product['category_name'] . '</td>
-																	<td>' . $product['quantity_in_stock'] . '</td>
-																	<td>' . $product['reorder_level'] . '</td>
-																	<td>' . $product['original_price'] . '</td>
-																	<td>' . $product['current_price'] . '</td>
-																	<td>' . $product['total_views'] . '</td>
-																	<td>
-																		<button class="viewProductBtn btn btn-xs btn-rounded btn-secondary" data-id="' . esc($product['product_id']) . '">View</button>
-																		<button class="editProductBtn btn btn-xs btn-rounded btn-success" data-id="' . esc($product['product_id']) . '">Edit</button>
-																		<button class="btn btn-xs btn-rounded btn-danger" onclick="if (confirm(\'Are you sure you want to delete this record?\')) {$(this).addClass(\'deleteProductBtn\');}" data-id="' . esc($product['product_id']) . '">Delete</button>
-																	</td>
-																</tr>';
-                    $no++;
-                  }
+                  $planManager = new Subscription();
+                  $plans       = $planManager->listSubscriptionPlans();
                 
                 ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <!-- End Card with Card Tool -->
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+								<div class="table-responsive">
+									<table class="table table-bordered table-sm table-striped dataTable">
+										<thead>
+										<tr>
+											<th>#</th>
+											<th>Plan</th>
+											<th>Description</th>
+											<th>Price</th>
+											<th>Duration</th>
+											<th>Max Products</th>
+											<th>Deals</th>
+											<th>Social Media Products</th>
+											<th>Support</th>
+										</tr>
+										</thead>
+										<tbody>
+                    <?php $no = 1; ?>
+                    <?php foreach ($plans as $plan) : ?>
+											<tr>
+												<td><?= $no ?></td>
+												<td><?= esc($plan['name']); ?></td>
+												<td><?= esc($plan['description']); ?></td>
+												<td><?= CURRENCY . " " . number_format($plan['price']); ?></td>
+												<td><?= esc($plan['duration']); ?></td>
+												<td><?= esc($plan['max_products']); ?></td>
+												<td><?= esc($plan['deal_of_day']); ?></td>
+												<td><?= esc($plan['social_media']); ?></td>
+												<td><?= esc($plan['customer_support']); ?></td>
+											</tr>
+                      <?php $no++; ?>
+                    <?php endforeach; ?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- End Card with Card Tool -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
 
 <?php
   

@@ -45,14 +45,7 @@
             <h3 class="card-title"><?= PAGE ?> List</h3>
             <div class="card-tools">
               <!-- Dropdown Menu -->
-              <div class="dropdown">
-                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                  <i class="fas fa-wrench"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a href="javascript:void(0)" class="addProductBtn dropdown-item">Add Product</a>
-                </div>
-              </div>
+	            <a href="javascript:void(0)" class="addProductBtn btn btn-xs btn-primary">Add Product</a>
               <!-- End Dropdown Menu -->
             </div>
           </div>

@@ -9,7 +9,7 @@
 							products and vendors, ensuring you
 							find everything you need in one place. Your journey with us is more than just a purchase; it's a promise
 							of value and a shopping experience you can depend on. We appreciate your trust in our brand and continue to strive for excellence in providing top-notch products and service from the rightful vendors.</p>
-						
+					
 					</div><!-- End .widget about-widget -->
 				</div><!-- End .col-sm-12 col-lg-4 -->
 				
@@ -116,7 +116,7 @@
 						<li><a href="categories.php">Shop By Category</a></li>
 						<li><a href="shop.php">Shop by Product</a></li>
 						<li><a href="vendors.php">Vendor List</a></li>
-						<?= (!isset($_SESSION['user']) ? '<li><a href="#signin-modal" data-toggle="modal">Become a Vendor</a></li>' : '' ) ?>
+            <?= (!isset($_SESSION['user']) ? '<li><a href="#signin-modal" data-toggle="modal">Become a Vendor</a></li>' : '') ?>
 						<li><a href="blogs.php">Blogs</a></li>
 						<li><a href="contact.php">Customer Service</a></li>
 						<hr class="p-0 m-0">
@@ -172,6 +172,7 @@
 						<div class="tab-content" id="tab-content-5">
 							<div class="accountMsg"></div>
 							<div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+								<p class="font-weight-bold text-center">Step into your account effortlessly with just a click!</p>
 								<form method="post" class="signIn">
 									<div class="form-group">
 										<label for="singin-email">Username or email address *</label>
@@ -183,10 +184,18 @@
 										<input type="password" class="form-control" id="singin-password" name="singin-password" required>
 									</div><!-- End .form-group -->
 									
-									<div class="form-group">
-										<label for="login-password-visibility">
-											<input type="checkbox" id="login-password-visibility"> Show Password?
-										</label>
+									<div class="container">
+										<div class="row">
+											<div class="col custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" id="login-password-visibility">
+												<label class="custom-control-label" for="login-password-visibility">Show Password</label>
+											</div>
+											
+											<div class="col custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" id="signin-remember" name="remember_me">
+												<label class="custom-control-label" for="signin-remember">Remember Me</label>
+											</div><!-- End .custom-checkbox -->
+										</div>
 									</div>
 									
 									<div class="form-footer">
@@ -194,11 +203,6 @@
 											<span>LOG IN</span>
 											<i class="icon-long-arrow-right"></i>
 										</button>
-										
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="signin-remember">
-											<label class="custom-control-label" for="signin-remember">Remember Me</label>
-										</div><!-- End .custom-checkbox -->
 										
 										<a href="forgot_password.php" class="forgot-link">Forgot Your Password?</a>
 									</div><!-- End .form-footer -->
@@ -225,6 +229,7 @@
 							</div><!-- .End .tab-pane -->
 							<div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
 								<form method="post" class="registerForm">
+									<p class="font-weight-bold text-center">Unlock your potential as a vendor or customer & empower yourself today!</p>
 									<div class="form-group">
 										<label for="register-role">Select Role *</label>
 										<select class="form-control custom-select" id="register-role" name="register-role" required>
@@ -282,7 +287,6 @@
 </div><!-- End .modal -->
 
 
-
 <!-- Overall BS Modal -->
 <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -301,17 +305,17 @@
 </div>
 
 <!-- Quick View BS Modal -->
-<div class="modal fade" id="modal-product" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-product" role="dialog" aria-labelledby="modalProductLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document" style="max-width: calc(80vw)">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title" id="modalLabel"></h5>
+				<h5 class="modal-title" id="modalProductLabel"></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body p-4">
-				<div class="modalDetails"></div>
+				<div class="modalProductDetails"></div>
 			</div>
 		</div>
 	</div>
@@ -323,9 +327,9 @@
 			<div class="row no-gutters bg-white newsletter-popup-content">
 				<div class="col-xl-3-5col col-lg-7 banner-content-wrap">
 					<div class="banner-content text-center">
-						<img src="<?/*= FAVICON */?>" class="logo" alt="logo" width="60" height="15">
+						<img src="<? /*= FAVICON */ ?>" class="logo" alt="logo" width="60" height="15">
 						<h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
-						<p>Subscribe to the <?/*= COMPANY */?> newsletter to receive timely updates from your favorite products and discount coupons that make you save the day.</p>
+						<p>Subscribe to the <? /*= COMPANY */ ?> newsletter to receive timely updates from your favorite products and discount coupons that make you save the day.</p>
 						<form action="#">
 							<div class="input-group input-group-round">
 								<input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
@@ -363,7 +367,6 @@
 <script src="assets/js/jquery.countdown.min.js"></script>
 <script src="assets/plugins/dropzone/dropzone-min.js"></script>
 <script src="assets/plugins/toastr/toastr.min.js"></script>
-<script src="assets/plugins/masonry/masonry.pkgd.min.js"></script>
 <script src="assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
 <script src="assets/plugins/aos/aos.js"></script>
 <script src="assets/plugins/rateit.js/jquery.rateit.min.js"></script>

@@ -141,33 +141,6 @@
       $this->connection->close();
     }
     
-    public function recordStockMovement($productId, $warehouseId, $movementType, $quantity)
-    {
-      // Implement the logic to record a stock movement
-      // Update stock quantities, log the movement, etc.
-      $sql = "INSERT INTO stockmovements (product_id, warehouse_id, movement_type, quantity, movement_date)
-            VALUES (?, ?, ?, ?, NOW())";
-      
-      $this->insertQuery($sql, [$productId, $warehouseId, $movementType, $quantity]);
-      
-      // Update stock quantities
-      $products = new Products();
-      $products->updateStockQuantities($productId, $movementType, $quantity);
-    }
-    
-    public function getStockMovement()
-    {
-      $sql    = "SELECT stockmovements.*, products.*, warehouses.* FROM stockmovements JOIN products ON stockmovements.product_id=products.product_id JOIN warehouses ON stockmovements.warehouse_id = warehouses.warehouse_id ORDER BY movement_id DESC";
-      $result = $this->selectQuery($sql);
-      
-      $movements = [];
-      while ($row = $result->fetch_assoc()) {
-        $movements[] = $row;
-      }
-      
-      return $movements;
-    }
-    
     public function get($key)
     {
       // Return the configuration value based on the given key
@@ -406,6 +379,22 @@
       $params = [esc($_SESSION['user_id'])];
       $result = $this->selectQuery($sql, $params)->fetch_assoc();
       return $result['vendor_id'] ?? false;
+    }
+  
+    public function getSubscriptionPlansComboOptions($selectedId = null)
+    {
+      // Fetch animal data from the database
+      $sql    = "SELECT * FROM subscription_plans";
+      $result = $this->selectQuery($sql);
+    
+      // Generate HTML options
+      $options = '';
+      while ($row = $result->fetch_assoc()) {
+        $selected = ($row['subscription_id'] == $selectedId) ? 'selected' : '';
+        $options  .= '<option value="' . $row['subscription_id'] . '" ' . $selected . ' data-price="'.$row['price'].'">' . $row['name'] . ' - '.number_format($row['price']).'</option>';
+      }
+    
+      return $options;
     }
     
     // Working on Notifications

@@ -2105,6 +2105,7 @@ MORE CUSTOMIZATION
 .active:hover .cat-block img {
 	transform: scale(0.95) !important;
 }
+
 .active .p-0.text-center {
 	margin: 0 !important;
 	padding: 0 !important;
@@ -2130,24 +2131,20 @@ MORE CUSTOMIZATION
 }
 
 .product-lists .product {
-	border: 1px solid rgba(187,187,187, 0.2);
+	border: 1px solid rgba(187, 187, 187, 0.2);
 }
 
 .product {
 	margin: 0 !important;
 }
 
-.product-title, .new-price  {
+.product-title, .new-price {
 	font-size: 1.2rem
 }
 
 .product-location {
 	font-size: 1.1rem;
 }
-
-
-
-
 
 
 header .overlay {
@@ -2166,7 +2163,7 @@ header .overlay {
 	top: 14%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: #fff;
+	background-color: #FFF;
 	padding: 0;
 	width: 80%;
 	border-radius: 5px;
@@ -2177,7 +2174,7 @@ header .overlay {
 	width: 100%;
 	padding: 10px;
 	float: left;
-	border: 1px solid #ccc;
+	border: 1px solid #CCC;
 	border-radius: 5px;
 }
 
@@ -2186,7 +2183,7 @@ header .overlay {
 	top: 50px;
 	width: 100%;
 	height: auto;
-	max-height:  calc(41.5vh);
+	max-height: calc(41.5vh);
 	overflow: hidden;
 	overflow-y: auto;
 	background: white;
@@ -2194,7 +2191,7 @@ header .overlay {
 }
 
 #searchResults .product-item {
-	border: 1px solid #ccc;
+	border: 1px solid #CCC;
 	padding: 3px;
 	border-top: none;
 }
@@ -2206,10 +2203,10 @@ Desktop Search
 	top: 46px;
 	width: 100%;
 	height: auto;
-	max-height:  calc(60.5vh);
+	max-height: calc(60.5vh);
 	z-index: 1000;
 	display: block;
-	background: #fff;
+	background: #FFF;
 	overflow: hidden;
 	overflow-y: auto;
 	position: absolute;
@@ -2249,4 +2246,69 @@ Desktop Search
 .logo {
 	padding: 0 !important;
 	margin: 0 !important;
+}
+
+
+/*********************
+**    Language Bar   **
+**************************/
+.lang {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #333;
+	line-height: 0.85;
+	margin-left: 2rem;
+}
+
+.lang img {
+	font-size: 3.2rem;
+	padding-bottom: 0;
+	height: 25px;
+	margin-bottom: 2px;
+}
+
+.lang .text-capitalize {
+	font-size: 1.1rem;
+	font-weight: 300;
+	letter-spacing: 0;
+	color: #777;
+	margin-top: 0.3rem;
+	transition: all 0.3s;
+}
+
+.lang:hover > .text-capitalize {
+	color: #FFA500;
+}
+
+.langs {
+	padding: 5px;
+	margin: 0;
+}
+
+.lang-item {
+	padding: 5px;
+}
+
+.lang-item:hover, .lang-item:hover a {
+	color: rgb(20, 120, 255);
+	background: #CCC;
+	cursor: pointer;
+}
+
+@media (max-width: 370px) {
+	
+	.header-middle img {
+		width: 40px;;
+	}
+	
+	.header-middle .lang img{
+		width: 25px !important;
+	}
+	
+	.mobile-menu-toggler {
+		margin: 0 !important
+	}
+	
 }

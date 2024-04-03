@@ -2,6 +2,8 @@
   
   include_once "config.inc.php";
   
+  autoLogin();
+  
   $data = new Frontend();
   $pic  = new Users();
 
@@ -55,15 +57,12 @@
 	<link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
 	<link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="assets/plugins/dropzone/dropzone.css">
-	<link rel="stylesheet" href="assets/plugins/datatables/datatables.min.css">
-	<link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 	<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
 	<link rel="stylesheet" href="assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-	<link rel="stylesheet" href="assets/plugins/chart.js/Chart.min.css">
-	<link rel="stylesheet" href="assets/plugins/summernote/summernote-bs4.min.css">
 	<link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" href="assets/plugins/animate/animate.min.css">
 	<link rel="stylesheet" href="assets/plugins/ion-rangeslider/css/ion.rangeSlider.min.css">
+	<link rel="stylesheet" href="assets/plugins/flag-icon-css/css/flag-icon.min.css">
 	<link rel="stylesheet" href="assets/plugins/aos/aos.css">
 	<link rel="stylesheet" href="assets/plugins/rateit.js/rateit.css">
 	<!-- Main CSS File -->
@@ -84,8 +83,19 @@
     
     function changeLanguage(languageCode)
     {
+	    var displayed = document.getElementById('lang-txt');
       var selectedLanguage = document.getElementById('selectedLanguage');
-      selectedLanguage.innerHTML = languageCode;
+  
+      var data;
+      if (languageCode === 'es') {
+        data = 'Spanish';
+      } else if (languageCode === 'fr') {
+        data = 'French';
+      } else {
+        data = 'English';
+      }
+  
+      displayed.innerHTML = data;
       
       // Trigger Google Translate API to change the language
       var el = document.querySelector('.goog-te-combo');
@@ -98,53 +108,6 @@
 <body>
 <div class="page-wrapper">
 	<header class="header header-14">
-		<div class="header-top">
-			<div class="container">
-				<div class="header-left">
-					<div class="d-none d-md-block">
-						<a href="mailto:<?= str_replace(" ", "", COMPANYEMAIL) ?>"><i class="icon-envelope"></i>Mail Us: <?= COMPANYEMAIL ?></a>
-						&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="tel:<?= str_replace(" ", "", COMPANYPHONE) ?>"><i class="icon-phone"></i>Call: <?= COMPANYPHONE ?></a>
-					</div>
-					<div class="d-block d-md-none d-lg-none d-xl-none">
-						<a href="contact.php">Contact Us</a>
-					</div>
-				</div><!-- End .header-left -->
-				
-				<div class="header-right">
-					
-					<ul class="top-menu">
-						<li>
-							<div class="header-dropdown">
-								<a href="javascript:void(0)">USD</a>
-								<div class="header-menu">
-									<ul>
-										<li><a href="javascript:void(0)">Eur</a></li>
-										<li><a href="javascript:void(0)">Usd</a></li>
-									</ul>
-								</div><!-- End .header-menu -->
-							</div><!-- End .header-dropdown -->
-						</li>
-						<!-- Language Selection Dropdown -->
-						<li>
-							<div class="header-dropdown">
-								<a href="javascript:void(0)" class="lang" id="selectedLanguage">En</a>
-								<div class="header-menu">
-									<ul>
-										<li class="notranslate"><a href="javascript:void(0)" onclick="changeLanguage('en')">En</a></li>
-										<li class="notranslate"><a href="javascript:void(0)" onclick="changeLanguage('fr')">Fr</a></li>
-										<li class="notranslate"><a href="javascript:void(0)" onclick="changeLanguage('es')">Es</a></li>
-									</ul>
-								</div><!-- End .header-menu -->
-							</div><!-- End .header-dropdown -->
-							<!-- Google Translate Element -->
-							<div id="google_translate_element"></div>
-						</li>
-					</ul><!-- End .top-menu -->
-				</div><!-- End .header-right -->
-			</div><!-- End .container -->
-		</div><!-- End .header-top -->
-		
 		<div class="header-middle">
 			<div class="container-fluid">
 				<div class="row">
@@ -163,7 +126,7 @@
 						<div class="row">
 							<div class="col-lg-8 col-xxl-4-5col d-none d-lg-block">
 								<div class="header-search header-search-extended header-search-visible header-search-no-radius">
-									<a href="javascript:void(0)" class="search-toggle" role="button"><i class="icon-search"></i></a>
+									<a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
 									<div class="header-search-wrapper search-wrapper-wide">
 										
 										<label for="search" class="sr-only">Search</label>
@@ -176,7 +139,7 @@
 							
 							<div class="col-lg-4 col-xxl-5col d-flex justify-content-end align-items-center">
 								<div class="header-dropdown-link">
-									<a href="javascript:void(0)" class="search-icon wishlist-link d-flex d-block d-xs-block d-lg-none" id="searchIcon" role="button">
+									<a href="#" class="search-icon wishlist-link d-flex d-block d-xs-block d-lg-none ml-0" id="searchIcon" role="button">
 										<i class="icon-search"></i>
 										<span class="wishlist-txt">Search</span>
 									</a>
@@ -187,8 +150,31 @@
 										</div>
 									</div>
 									
+									<div class="dropdown lang-dropdown">
+										<a href="#" class="lang dropdown-toggle" id="selectedLanguage" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
+											<img src="assets/img/g_translate@2x.png" alt="G-Translate">
+											<span id="lang-txt" class="text-capitalize">English</span>
+										</a>
+										
+										<div class="dropdown-menu dropdown-menu-right">
+											<ul class="langs">
+												<li class="lang-item" onclick="changeLanguage('en')">
+													<h4 class="compare-product-title"><a href="#"><i class="flag-icon flag-icon-us"></i> English</a></h4>
+												</li>
+												<li class="lang-item" onclick="changeLanguage('fr')">
+													<h4 class="compare-product-title"><a href="#"><i class="flag-icon flag-icon-fr"></i> French</a></h4>
+												</li>
+												<li class="lang-item" onclick="changeLanguage('es')">
+													<h4 class="compare-product-title"><a href="#"><i class="flag-icon flag-icon-es"></i> Spanish</a></h4>
+												</li>
+												<!-- Google Translate Element -->
+												<div id="google_translate_element"></div>
+											</ul>
+										</div><!-- End .dropdown-menu -->
+									</div>
+									
 									<div class="dropdown cart-dropdown d-flex justify-content-center">
-										<a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+										<a href="cart.php" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
 											<i class="icon-shopping-cart"></i>
                       <?php
                         
@@ -222,9 +208,9 @@
                     
                     if (isset($_SESSION['user'])) {
                       echo '<div class="dropdown compare-dropdown d-flex flex-column justify-content-center">
-															<a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
+															<a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
 																'. $pic->profPic() .'
-																<a href="javascript:void(0)" style="color: #777; font-size: 1.2rem">' . getFirstWord($_SESSION['user']) . '</a>
+																<a href="#" style="color: #777; font-size: 1.2rem">' . getFirstWord($_SESSION['user']) . '</a>
 															</a>
 															
 															<div class="dropdown-menu dropdown-menu-right">
@@ -266,7 +252,7 @@
 					<div class="row">
 						<div class="col-auto col-lg-3 col-xl-3 col-xxl-2 header-left">
 							<div class="dropdown category-dropdown" data-visible="false">
-								<a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+								<a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
 									Browse Categories
 								</a>
 								
